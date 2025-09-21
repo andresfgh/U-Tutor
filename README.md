@@ -36,7 +36,7 @@ Asegúrate de que .env esté listado en .gitignore para que no se suba a GitHub.
 
 Clonar el repositorio:
 
-git clone https://github.com/tu-usuario/U-Tutor.git
+git clone https://github.com/andresfgh/U-Tutor.git
 cd U-Tutor
 
 
