@@ -1,0 +1,13 @@
+# Ignorar entorno virtual
+venv/
+
+# Ignorar archivo de variables de entorno (API Key)
+.env
+
+# Ignorar caches de Python
+__pycache__/
+*.pyc
+
+# Ignorar archivos de sistema de Windows / Mac
+.DS_Store
+Thumbs.db
