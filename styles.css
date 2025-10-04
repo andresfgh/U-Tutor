@@ -1,0 +1,99 @@
+/* Estilos para el chatbot - Posicionamiento y responsive */
+
+/* Estilos generales del chat */
+.main .block-container {
+    padding: 2rem;
+}
+
+/* Posicionamiento de mensajes del usuario (derecha) */
+.stChatMessage[data-testid="user"] {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+}
+
+.stChatMessage[data-testid="user"] .stChatMessage__content {
+    margin-left: auto;
+    margin-right: 0;
+    max-width: 70%;
+    text-align: right;
+}
+
+/* Posicionamiento de mensajes del asistente (izquierda) */
+.stChatMessage[data-testid="assistant"] {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.stChatMessage[data-testid="assistant"] .stChatMessage__content {
+    margin-left: 0;
+    margin-right: auto;
+    max-width: 70%;
+    text-align: left;
+}
+
+/* Espaciado entre mensajes */
+.stChatMessage {
+    margin-bottom: 1rem;
+}
+
+/* Animación suave para los mensajes */
+.stChatMessage__content > div {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Diseño responsive */
+:root {
+    --message-max-width-desktop: 60%;
+    --message-max-width-tablet: 75%;
+    --message-max-width-mobile: 85%;
+    --message-max-width-small: 90%;
+}
+
+/* Selector común para ambos tipos de mensajes */
+.stChatMessage[data-testid="user"] .stChatMessage__content,
+.stChatMessage[data-testid="assistant"] .stChatMessage__content {
+    max-width: var(--message-max-width-desktop);
+}
+
+/* Media queries optimizadas */
+@media (max-width: 1024px) {
+    .stChatMessage[data-testid="user"] .stChatMessage__content,
+    .stChatMessage[data-testid="assistant"] .stChatMessage__content {
+        max-width: var(--message-max-width-tablet);
+    }
+}
+
+@media (max-width: 768px) {
+    .stChatMessage[data-testid="user"] .stChatMessage__content,
+    .stChatMessage[data-testid="assistant"] .stChatMessage__content {
+        max-width: var(--message-max-width-mobile);
+    }
+    
+    .main .block-container {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .stChatMessage[data-testid="user"] .stChatMessage__content,
+    .stChatMessage[data-testid="assistant"] .stChatMessage__content {
+        max-width: var(--message-max-width-small);
+    }
+    
+    .main .block-container {
+        padding: 0.5rem 0.5rem 1rem 0.5rem;
+    }
+}
