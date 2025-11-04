@@ -1,0 +1,451 @@
+/* U-TUTOR v5.0 - Estilos Modernos Mejorados */
+
+/* ============================================
+   VARIABLES GLOBALES
+   ============================================ */
+:root {
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.2s ease;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+    --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* ============================================
+   CONTENEDOR DE INPUT - MEJORADO
+   ============================================ */
+.input-container {
+    margin-top: 20px;
+    padding: 0 20px;
+    animation: fadeInUp 0.4s ease-out;
+}
+
+.input-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 10px;
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(160, 196, 255, 0.1);
+    transition: var(--transition-smooth);
+}
+
+.input-wrapper:hover {
+    border-color: rgba(160, 196, 255, 0.3);
+    box-shadow: var(--shadow-md);
+}
+
+.input-wrapper:focus-within {
+    border-color: rgba(160, 196, 255, 0.5);
+    box-shadow: 0 0 0 3px rgba(160, 196, 255, 0.1);
+}
+
+.send-button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Botón de envío mejorado */
+.send-button-wrapper button {
+    min-width: 48px !important;
+    min-height: 48px !important;
+    border-radius: 12px !important;
+    font-size: 20px !important;
+    transition: var(--transition-smooth) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.send-button-wrapper button:hover {
+    transform: translateY(-2px) scale(1.05) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+.send-button-wrapper button:active {
+    transform: translateY(0) scale(0.98) !important;
+}
+
+/* ============================================
+   CONTENEDOR DEL CHAT - MEJORADO
+   ============================================ */
+.u-tutor-chat {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.u-tutor-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 10px 0;
+}
+
+/* ============================================
+   BURBUJAS DE CHAT - MEJORADAS
+   ============================================ */
+.u-tutor-message {
+    display: flex;
+    margin-bottom: 12px;
+    animation: slideInMessage 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slideInMessage {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.u-tutor-message.user {
+    justify-content: flex-end;
+}
+
+.u-tutor-message.assistant {
+    justify-content: flex-start;
+}
+
+.u-tutor-bubble-user,
+.u-tutor-bubble-assistant {
+    max-width: 70%;
+    padding: 14px 18px;
+    border-radius: 16px;
+    word-wrap: break-word;
+    line-height: 1.6;
+    position: relative;
+    transition: var(--transition-smooth);
+    backdrop-filter: blur(10px);
+}
+
+/* Burbuja de usuario - Mejorada */
+.u-tutor-bubble-user {
+    background: linear-gradient(135deg, rgba(43, 58, 74, 0.95) 0%, rgba(35, 48, 63, 0.95) 100%);
+    color: #a0c4ff;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(160, 196, 255, 0.2);
+    border-bottom-right-radius: 4px;
+}
+
+.u-tutor-bubble-user::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: -8px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid rgba(43, 58, 74, 0.95);
+    border-bottom: 8px solid transparent;
+}
+
+/* Burbuja de asistente - Mejorada */
+.u-tutor-bubble-assistant {
+    background: linear-gradient(135deg, rgba(27, 42, 54, 0.95) 0%, rgba(20, 35, 47, 0.95) 100%);
+    color: #a0c4ff;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(160, 196, 255, 0.15);
+    border-bottom-left-radius: 4px;
+}
+
+.u-tutor-bubble-assistant::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -8px;
+    width: 0;
+    height: 0;
+    border-right: 8px solid rgba(27, 42, 54, 0.95);
+    border-bottom: 8px solid transparent;
+}
+
+/* Hover effects para burbujas */
+.u-tutor-bubble-user:hover,
+.u-tutor-bubble-assistant:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ============================================
+   AVATARES - MEJORADOS
+   ============================================ */
+.u-tutor-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 12px;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, rgba(160, 196, 255, 0.2) 0%, rgba(100, 150, 255, 0.2) 100%);
+    border: 2px solid rgba(160, 196, 255, 0.3);
+    font-size: 20px;
+    transition: var(--transition-smooth);
+    box-shadow: var(--shadow-sm);
+}
+
+.u-tutor-avatar:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(160, 196, 255, 0.5);
+}
+
+.u-tutor-avatar.assistant {
+    background: linear-gradient(135deg, rgba(160, 196, 255, 0.25) 0%, rgba(100, 150, 255, 0.25) 100%);
+}
+
+.u-tutor-avatar.user {
+    background: linear-gradient(135deg, rgba(43, 58, 74, 0.3) 0%, rgba(35, 48, 63, 0.3) 100%);
+}
+
+/* ============================================
+   SIDEBAR - MEJORADO
+   ============================================ */
+.u-tutor-sidebar {
+    padding: 20px;
+}
+
+.sidebar-separator {
+    margin: 20px 0;
+    color: rgba(160, 196, 255, 0.3);
+    text-align: center;
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+/* Botones del sidebar - Mejorados */
+[data-testid="stSidebar"] button {
+    transition: var(--transition-smooth) !important;
+    border-radius: 10px !important;
+    font-weight: 500 !important;
+}
+
+[data-testid="stSidebar"] button:hover {
+    transform: translateX(4px) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+/* Botón de nueva conversación */
+[data-testid="stSidebar"] button[key="new_conv_button"] {
+    background: linear-gradient(135deg, rgba(160, 196, 255, 0.2) 0%, rgba(100, 150, 255, 0.2) 100%) !important;
+    border: 2px solid rgba(160, 196, 255, 0.3) !important;
+    font-size: 15px !important;
+    padding: 12px 16px !important;
+}
+
+[data-testid="stSidebar"] button[key="new_conv_button"]:hover {
+    background: linear-gradient(135deg, rgba(160, 196, 255, 0.3) 0%, rgba(100, 150, 255, 0.3) 100%) !important;
+    border-color: rgba(160, 196, 255, 0.5) !important;
+}
+
+/* Input de búsqueda en sidebar */
+[data-testid="stSidebar"] input {
+    border-radius: 10px !important;
+    transition: var(--transition-smooth) !important;
+    border: 1px solid rgba(160, 196, 255, 0.2) !important;
+}
+
+[data-testid="stSidebar"] input:focus {
+    border-color: rgba(160, 196, 255, 0.5) !important;
+    box-shadow: 0 0 0 3px rgba(160, 196, 255, 0.1) !important;
+}
+
+/* ============================================
+   BOTONES DE AUDIO - MEJORADOS
+   ============================================ */
+.tts-button-container-general {
+    margin: 12px 0;
+}
+
+.tts-audio-container-general {
+    margin: 12px 0;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Botones de reproducción de audio */
+button[key*="play_"],
+button[key*="pause_"] {
+    min-width: 40px !important;
+    min-height: 40px !important;
+    border-radius: 50% !important;
+    transition: var(--transition-smooth) !important;
+    box-shadow: var(--shadow-sm) !important;
+    background: linear-gradient(135deg, rgba(160, 196, 255, 0.2) 0%, rgba(100, 150, 255, 0.2) 100%) !important;
+    border: 2px solid rgba(160, 196, 255, 0.3) !important;
+}
+
+button[key*="play_"]:hover,
+button[key*="pause_"]:hover {
+    transform: scale(1.15) !important;
+    box-shadow: var(--shadow-md) !important;
+    border-color: rgba(160, 196, 255, 0.5) !important;
+}
+
+button[key*="play_"]:active,
+button[key*="pause_"]:active {
+    transform: scale(0.95) !important;
+}
+
+/* ============================================
+   ANIMACIONES GLOBALES
+   ============================================ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Indicador de "escribiendo..." */
+.typing-indicator {
+    display: inline-flex;
+    gap: 4px;
+    padding: 8px 12px;
+}
+
+.typing-indicator span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(160, 196, 255, 0.6);
+    animation: pulse 1.4s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* ============================================
+   MEJORAS DE INPUT DE TEXTO
+   ============================================ */
+[data-testid="stTextInput"] input {
+    transition: var(--transition-smooth) !important;
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
+}
+
+[data-testid="stTextInput"] input::placeholder {
+    opacity: 0.6;
+    transition: var(--transition-fast);
+}
+
+[data-testid="stTextInput"] input:focus::placeholder {
+    opacity: 0.8;
+    transform: translateX(4px);
+}
+
+/* ============================================
+   SPINNER Y LOADING
+   ============================================ */
+.stSpinner > div {
+    border-color: rgba(160, 196, 255, 0.3) !important;
+    border-top-color: rgba(160, 196, 255, 0.8) !important;
+}
+
+/* ============================================
+   SCROLL SUAVE
+   ============================================ */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(160, 196, 255, 0.5) 0%, rgba(100, 150, 255, 0.5) 100%);
+    border-radius: 10px;
+    transition: var(--transition-fast);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(160, 196, 255, 0.7) 0%, rgba(100, 150, 255, 0.7) 100%);
+}
+
+/* ============================================
+   RESPONSIVE - MOBILE FIRST
+   ============================================ */
+@media (max-width: 768px) {
+    .u-tutor-bubble-user,
+    .u-tutor-bubble-assistant {
+        max-width: 85%;
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+
+    .input-wrapper {
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .u-tutor-avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+
+    .send-button-wrapper button {
+        min-width: 44px !important;
+        min-height: 44px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .u-tutor-bubble-user,
+    .u-tutor-bubble-assistant {
+        max-width: 92%;
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    .input-wrapper {
+        flex-direction: row;
+        gap: 6px;
+    }
+
+    .u-tutor-messages {
+        gap: 12px;
+    }
+}

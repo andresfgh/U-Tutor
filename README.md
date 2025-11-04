@@ -1,7 +1,6 @@
 🎓 U-Tutor: tu asistente universitario
 
-U-Tutor es un chatbot interactivo desarrollado con Python, Streamlit y LangChain, potenciado por la API de OpenAI.
-Su objetivo es brindar a estudiantes universitarios un tutor virtual empático y profesional, capaz de responder dudas académicas de manera clara y cercana.
+U-Tutor es un chatbot interactivo desarrollado con Python, Streamlit y LangChain, potenciado por la API de OpenAI. Su objetivo es brindar a estudiantes universitarios un tutor virtual empático y profesional, capaz de responder dudas académicas de manera clara y cercana.
 
 ✨ Características
 
@@ -17,9 +16,7 @@ Su objetivo es brindar a estudiantes universitarios un tutor virtual empático y
 
 ⚠️ Importante sobre la API Key
 
-Por seguridad, la API key de OpenAI NO se comparte en este repositorio.
-Cada usuario que quiera usar este proyecto debe crear su propia API key en OpenAI
- y colocarla en un archivo .env.
+Por seguridad, la API key de OpenAI NO se comparte en este repositorio. Cada usuario que quiera usar este proyecto debe crear su propia API key en OpenAI y colocarla en un archivo .env.
 
 Cómo crear el archivo .env:
 
@@ -29,33 +26,29 @@ Agrega la siguiente línea, reemplazando TU_API_KEY con tu propia key:
 
 OPENAI_API_KEY=TU_API_KEY
 
-
 Asegúrate de que .env esté listado en .gitignore para que no se suba a GitHub.
 
 🛠️ Instalación y ejecución
 
 Clonar el repositorio:
 
-git clone https://github.com/andresfgh/U-Tutor.git
-cd U-Tutor
-
+git clone https://github.com/andresfgh/U-Tutor.git cd U-Tutor
 
 Crear y activar el entorno virtual:
 
-# Crear entorno virtual
+Crear entorno virtual
 python -m venv venv
 
-# Activar entorno virtual
-# Linux / Mac
+Activar entorno virtual
+Linux / Mac
 source venv/bin/activate
-# Windows
-venv\Scripts\activate
 
+Windows
+venv\Scripts\activate
 
 Instalar dependencias:
 
 pip install -r requirements.txt
-
 
 Ejecutar la aplicación:
 
