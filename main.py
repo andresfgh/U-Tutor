@@ -124,153 +124,49 @@ class UTutorApp:
             conv_id = int(conv_id[0])
             action = action[0]
             if action == "download":
-                self._export_conversation_direct(conv_id)
+                # TODO: Implementar export directo
+                pass
             elif action == "rename":
                 st.session_state.editing_title = conv_id
                 st.rerun()
             elif action == "delete":
-                self._delete_conversation_direct(conv_id)
+                # TODO: Implementar delete directo
+                pass
     def _apply_theme(self):
-        """Aplica colores temáticos dinámicos - OPTIMIZADO CON CACHE Y MEJORAS VISUALES"""
+        """Aplica colores temáticos dinámicos - OPTIMIZADO CON CACHE"""
         theme = st.session_state.get('theme', 'blueish')
         colors = get_theme_colors(theme)  # Usa cache para evitar recompilación
 
-        # Aplicar colores dinámicamente con mejoras visuales
+        # Aplicar colores dinámicamente
         st.markdown(f"""
         <style>
-        /* ========== TEMA BASE ========== */
         .stApp {{
             background: {colors['bg']} !important;
             color: {colors['assistant_text']} !important;
-            transition: background 0.3s ease;
         }}
 
-        /* ========== SIDEBAR MEJORADO ========== */
         [data-testid="stSidebar"] {{
             background: {colors['sidebar_bg']} !important;
-            box-shadow: 2px 0 12px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }}
 
-        /* ========== MENSAJES DE CHAT CON EFECTOS ========== */
         .stChatMessage[data-testid="user"] .stChatMessage__content {{
             background: {colors['user_bg']} !important;
             color: {colors['user_text']} !important;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
-        }}
-
-        .stChatMessage[data-testid="user"] .stChatMessage__content:hover {{
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }}
 
         .stChatMessage[data-testid="assistant"] .stChatMessage__content {{
             background: {colors['assistant_bg']} !important;
             color: {colors['assistant_text']} !important;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
         }}
 
-        .stChatMessage[data-testid="assistant"] .stChatMessage__content:hover {{
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-        }}
-
-        /* ========== BOTONES CON EFECTOS MEJORADOS ========== */
         .stButton > button {{
-            background: linear-gradient(135deg, {colors['button_bg']} 0%, {colors['button_bg']} 100%) !important;
+            background: {colors['button_bg']} !important;
             color: {colors['button_text']} !important;
-            border: 1px solid rgba(160, 196, 255, 0.2) !important;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-            font-weight: 500 !important;
         }}
 
-        .stButton > button:hover {{
-            transform: translateY(-2px) scale(1.02) !important;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
-            border-color: rgba(160, 196, 255, 0.4) !important;
-        }}
-
-        .stButton > button:active {{
-            transform: translateY(0) scale(0.98) !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-        }}
-
-        /* ========== INPUT DE TEXTO MEJORADO ========== */
         .stTextInput > div > div > input {{
             background: {colors['input_bg']} !important;
             color: {colors['input_text']} !important;
-            border: 1px solid rgba(160, 196, 255, 0.2) !important;
-            border-radius: 12px !important;
-            padding: 12px 16px !important;
-            transition: all 0.3s ease !important;
-            font-size: 15px !important;
-        }}
-
-        .stTextInput > div > div > input:hover {{
-            border-color: rgba(160, 196, 255, 0.4) !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-        }}
-
-        .stTextInput > div > div > input:focus {{
-            border-color: rgba(160, 196, 255, 0.6) !important;
-            box-shadow: 0 0 0 3px rgba(160, 196, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-            transform: scale(1.01);
-        }}
-
-        /* ========== MEJORAS DE ANIMACIÓN ========== */
-        @keyframes fadeInElement {{
-            from {{
-                opacity: 0;
-                transform: translateY(10px);
-            }}
-            to {{
-                opacity: 1;
-                transform: translateY(0);
-            }}
-        }}
-
-        /* ========== INDICADORES VISUALES ========== */
-        .stSuccess, .stInfo, .stWarning, .stError {{
-            border-radius: 10px !important;
-            padding: 12px 16px !important;
-            animation: fadeInElement 0.4s ease-out;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-        }}
-
-        /* ========== MEJORAS DE EXPANDER ========== */
-        .streamlit-expanderHeader {{
-            border-radius: 10px !important;
-            transition: all 0.3s ease !important;
-            background: rgba(160, 196, 255, 0.05) !important;
-        }}
-
-        .streamlit-expanderHeader:hover {{
-            background: rgba(160, 196, 255, 0.1) !important;
-            transform: translateX(4px);
-        }}
-
-        /* ========== SCROLL PERSONALIZADO ========== */
-        ::-webkit-scrollbar {{
-            width: 10px;
-            height: 10px;
-        }}
-
-        ::-webkit-scrollbar-track {{
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }}
-
-        ::-webkit-scrollbar-thumb {{
-            background: linear-gradient(180deg, rgba(160, 196, 255, 0.5), rgba(100, 150, 255, 0.5));
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }}
-
-        ::-webkit-scrollbar-thumb:hover {{
-            background: linear-gradient(180deg, rgba(160, 196, 255, 0.7), rgba(100, 150, 255, 0.7));
         }}
         </style>
         """, unsafe_allow_html=True)
@@ -309,6 +205,7 @@ class UTutorApp:
         if css_content:
             st.markdown(f'<style>{css_content}</style>', unsafe_allow_html=True)
 
+
     def _apply_settings_changes(self):
         """Aplica cambios de configuración si se modificaron - U-TUTOR v5.0"""
         if st.session_state.get('settings_changed', False):
@@ -338,15 +235,19 @@ class UTutorApp:
         if "current_audio" not in st.session_state:
             st.session_state.current_audio = None
 
-        if "voice_input_active" not in st.session_state:
-            st.session_state.voice_input_active = False
-
         if "menu_counter" not in st.session_state:
             st.session_state.menu_counter = 0
 
         # Inicializar flag de espera de respuesta
         if "await_response" not in st.session_state:
             st.session_state.await_response = False
+
+        # PLAN: Flags para cancelación graceful de generación
+        if "generation_cancelled" not in st.session_state:
+            st.session_state.generation_cancelled = False
+
+        if "cancelled_at_message" not in st.session_state:
+            st.session_state.cancelled_at_message = None
 
         # Inicializar configuración (temperatura y personalidad)
         if "temperature" not in st.session_state:
@@ -358,6 +259,7 @@ class UTutorApp:
         if "settings_changed" not in st.session_state:
             st.session_state.settings_changed = False
 
+
         if "show_config_page" not in st.session_state:
             st.session_state.show_config_page = False
     
@@ -365,11 +267,10 @@ class UTutorApp:
         """Ejecuta la aplicación principal - U-TUTOR v5.0"""
         # Aplicar tema dinámico
         self._apply_theme()
-        
+
         # Renderizar sidebar
         self.ui_components.render_sidebar()
-      
-        
+
         # Renderizar área principal de chat
         self.ui_components.render_main_chat_area()
         
@@ -381,8 +282,7 @@ class UTutorApp:
 
         # Si hay una respuesta pendiente por parte del asistente, generarla aquí
         if st.session_state.get('await_response'):
-            # Clear flag first to avoid re-entrancy during generation
-            st.session_state.await_response = False
+            print("🔵 [LOG] Detectado await_response=True, generando respuesta...")
             self._generate_assistant_response()
 
         # Reproducir audio si está solicitado
@@ -413,7 +313,7 @@ class UTutorApp:
                 if cache_size > 0:
                     st.info(f"⚡ Caché activo: {cache_size} archivos guardados para reproducción rápida")
                 
-                with st.spinner(f" Generando audio en {lang_name}..."):
+                with st.spinner():
                     import time
                     start_time = time.time()
                     
@@ -492,7 +392,8 @@ class UTutorApp:
     # ------------------ MANEJO DE INPUT ------------------
     def _handle_user_input(self):
         """
-        Maneja la entrada de texto del usuario - U-TUTOR v5.0
+        Maneja la entrada de texto del usuario con input FIJO en la parte inferior - U-TUTOR v5.0
+        FIX: Bloquear input mientras se genera respuesta
         """
 
         # 1️⃣ No mostrar input si estamos en la página de configuración
@@ -511,52 +412,60 @@ class UTutorApp:
             st.session_state.user_input = ""
             st.session_state.clear_input = False
 
+        # 3️⃣ FIX: Verificar si se está generando respuesta
+        is_generating = st.session_state.get("await_response", False)
 
-        # 4️⃣ Renderizar contenedor del input
-        with st.container():
-            st.markdown('<div class="input-container">', unsafe_allow_html=True)
-            st.markdown('<div class="input-wrapper">', unsafe_allow_html=True)
+        # 3️⃣ Renderizar input FIJO al fondo de la pantalla
+        st.markdown('<div class="chat-input-fixed-container">', unsafe_allow_html=True)
+        st.markdown('<div class="chat-input-fixed-inner">', unsafe_allow_html=True)
 
-            # 5️⃣ Columnas responsivas
-            col_input, col_button = st.columns([10, 1], gap="small")
+        col_input, col_button = st.columns([20, 1], gap="small")
 
-            # 6️⃣ Input de texto
-            with col_input:
-                prompt = st.text_input(
-                    label="Mensaje",
-                    key="user_input",
-                    placeholder="Escribe tu mensaje...",
-                    label_visibility="collapsed"
-                )
+        # 4️⃣ Input de texto - RENDERIZADO FIJO (DESHABILITADO SI SE ESTÁ GENERANDO)
+        with col_input:
+            # FIX: Deshabilitar input mientras se genera
+            prompt = st.text_input(
+                label="Mensaje",
+                key="user_input",
+                placeholder="⏳ Esperando respuesta..." if is_generating else "Escribe tu pregunta...",
+                label_visibility="collapsed",
+                disabled=is_generating  # 🔴 BLOQUEAR INPUT DURANTE GENERACIÓN
+            )
 
-            # 7️⃣ Botón de enviar
-            with col_button:
-                st.markdown('<div class="send-button-wrapper">', unsafe_allow_html=True)
-                send_button = st.button("➤", use_container_width=True, key="send_button")
-                st.markdown('</div>', unsafe_allow_html=True)
+        # 5️⃣ Botón de enviar - RENDERIZADO FIJO (DESHABILITADO SI SE ESTÁ GENERANDO)
+        with col_button:
+            # FIX: Deshabilitar botón mientras se genera
+            send_button = st.button(
+                "⏳" if is_generating else "➤",
+                use_container_width=True,
+                key="send_button",
+                help="Esperando respuesta..." if is_generating else "Enviar (Enter)",
+                disabled=is_generating  # 🔴 BLOQUEAR BOTÓN DURANTE GENERACIÓN
+            )
 
-            st.markdown('</div>', unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
-            # 8️⃣ Detectar si el usuario envió el mensaje
-            if (send_button or (prompt and prompt.strip() != "")) and not st.session_state.get("await_response", False):
+        # 6️⃣ Detectar si el usuario envió el mensaje (NO SI SE ESTÁ GENERANDO)
+        if (send_button or (prompt and prompt.strip() != "")) and not is_generating:
 
-                current_prompt = prompt.strip()
+            current_prompt = prompt.strip()
 
-                # 9️⃣ Procesar el mensaje
-                self._process_user_message(current_prompt)
+            # 7️⃣ Procesar el mensaje
+            self._process_user_message(current_prompt)
 
-                # 10️⃣ Limpiar input en el próximo rerun
-                st.session_state.clear_input = True
+            # 8️⃣ Limpiar input en el próximo rerun
+            st.session_state.clear_input = True
 
-                # 11️⃣ Forzar rerun para actualizar la UI
-                st.rerun()
+            # 9️⃣ Forzar rerun para actualizar la UI
+            st.rerun()
 
 
     # ------------------ Procesar mensaje del usuario ------------------
     def _process_user_message(self, prompt: str):
         """
         Procesa un mensaje del usuario (desde texto o voz) - U-TUTOR v5.0
+        FIX: Evitar duplicación de mensajes al sincronizar
         """
 
         # 1️⃣ Validar mensaje
@@ -571,10 +480,10 @@ class UTutorApp:
             st.session_state.current_conversation_id = self.db_manager.create_conversation(conversation_title)
 
         # 3️⃣ Agregar mensaje del usuario al historial de la sesión
-        st.session_state.messages.append({
-            "role": "user",
-            "content": prompt
-        })
+        # FIX: No duplicar si ya está en la sesión
+        user_message = {"role": "user", "content": prompt}
+        if not any(msg.get("content") == prompt and msg.get("role") == "user" for msg in st.session_state.messages[-3:]):
+            st.session_state.messages.append(user_message)
 
         # 4️⃣ Guardar mensaje en la base de datos
         self.db_manager.save_message(
@@ -583,17 +492,9 @@ class UTutorApp:
             prompt
         )
 
-        # 5️⃣ Sincronizar el historial desde la base de datos
-        try:
-            messages_data = self.db_manager.load_conversation_messages(
-                st.session_state.current_conversation_id
-            )
-            st.session_state.messages = [
-                {"role": role, "content": content} for role, content, _ in messages_data
-            ]
-        except Exception:
-            # Si falla la carga, mantenemos el mensaje en session_state
-            pass
+        # 5️⃣ NO sincronizar desde la BD después de guardar
+        # Esto causa duplicados. La sesión es la fuente de verdad mientras se está usando.
+        # Sincronización solo ocurre al cargar conversaciones existentes.
 
         # 6️⃣ Marcar que estamos esperando la respuesta del asistente
         st.session_state.await_response = True
@@ -602,78 +503,81 @@ class UTutorApp:
     def _generate_assistant_response(self):
         """
         Genera y muestra la respuesta del asistente con streaming - U-TUTOR v5.0
+        FIX: Mejor protección contra re-entrancy y duplicación de mensajes
         """
         try:
+            # FIX: Proteger contra re-entrancy - si ya estamos generando, salir
+            if st.session_state.get('_generating_response', False):
+                print("⚠️ [LOG] Ya estamos generando, saliendo...")
+                return
+
+            print("🟢 [LOG] Iniciando _generate_assistant_response()")
+            st.session_state._generating_response = True
             placeholder = st.empty()  # Placeholder para el spinner / mensaje temporal
 
-            # Mostrar indicador de "escribiendo..." mejorado
-            with placeholder.container():
-                st.markdown("""
-                <div style='background: linear-gradient(135deg, rgba(27, 42, 54, 0.6) 0%, rgba(43, 58, 74, 0.6) 100%);
-                            padding: 16px 20px;
-                            border-radius: 12px;
-                            border-left: 4px solid #a0c4ff;
-                            display: flex;
-                            align-items: center;
-                            gap: 12px;
-                            animation: fadeIn 0.3s ease-out;'>
-                    <div style='font-size: 20px;'>🤔</div>
-                    <div>
-                        <div style='font-weight: 600; color: #a0c4ff; margin-bottom: 4px;'>
-                            Jake está pensando...
-                        </div>
-                        <div class='typing-indicator'>
-                            <span></span><span></span><span></span>
-                        </div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+            with self.ui_components.show_spinner("🤔 Jake está pensando..."):
 
-            full_response = ""
+                full_response = ""
+                print(f"📨 [LOG] Llamando get_response_stream con {len(st.session_state.messages)} mensajes")
 
-            # 1️⃣ Recolectar respuesta en streaming
-            for chunk in self.chat_manager.get_response_stream(st.session_state.messages):
-                if hasattr(chunk, 'content') and chunk.content:
-                    full_response += chunk.content
+                # 1️⃣ Recolectar respuesta en streaming
+                for chunk in self.chat_manager.get_response_stream(st.session_state.messages):
+                    if hasattr(chunk, 'content') and chunk.content:
+                        # Asegurar que es string antes de concatenar
+                        content = str(chunk.content) if chunk.content else ""
+                        full_response += content
 
-            # Limpiar el indicador de "escribiendo..."
-            placeholder.empty()
+                print(f"✅ [LOG] Respuesta generada ({len(full_response)} caracteres)")
 
-            # 2️⃣ Post-procesar traducción para TTS si aplica
-            tts_language = st.session_state.get('tts_language', 'es')
-            auto_translate = st.session_state.get('auto_translate', True)
+                # 2️⃣ Post-procesar traducción para TTS si aplica
+                tts_language = st.session_state.get('tts_language', 'es')
+                auto_translate = st.session_state.get('auto_translate', True)
 
-            if tts_language == 'en' and auto_translate:
-                translated_response = self.chat_manager.translate_text(full_response, 'en')
-                audio_response = translated_response if translated_response != full_response else full_response
-            else:
-                audio_response = full_response
+                if tts_language == 'en' and auto_translate:
+                    translated_response = self.chat_manager.translate_text(full_response, 'en')
+                    audio_response = translated_response if translated_response != full_response else full_response
+                else:
+                    audio_response = full_response
 
-            # 3️⃣ Guardar mensaje del asistente en sesión y DB
-            st.session_state.messages.append({
-                "role": "assistant",
-                "content": full_response
-            })
-            self.db_manager.save_message(
-                st.session_state.current_conversation_id,
-                "assistant",
-                full_response
-            )
+                # 3️⃣ FIX: Verificar que no haya un mensaje del asistente duplicado
+                # (esto puede ocurrir si se hizo rerun antes de limpiar await_response)
+                print(f"💾 [LOG] Guardando mensaje en sesión y BD...")
 
-            # 4️⃣ Renderizar inmediatamente la burbuja del asistente
-            if full_response.strip():
-                try:
-                    self.ui_components.render_chat_messages([
-                        {"role": "assistant", "content": full_response}
-                    ])
-                except Exception:
-                    pass
+                # Verificar si el último mensaje ya es del asistente (evitar duplicado)
+                if (st.session_state.messages and
+                    st.session_state.messages[-1].get("role") == "assistant"):
+                    print("⚠️ [LOG] Último mensaje ya es del asistente, reemplazando...")
+                    st.session_state.messages[-1] = {
+                        "role": "assistant",
+                        "content": full_response
+                    }
+                else:
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "content": full_response
+                    })
 
-            # 5️⃣ Placeholder para botones de audio si quieres agregar
-            col1, col2 = st.columns([1, 10])
+                self.db_manager.save_message(
+                    st.session_state.current_conversation_id,
+                    "assistant",
+                    full_response
+                )
+                print(f"💾 [LOG] Mensaje guardado. Total mensajes: {len(st.session_state.messages)}")
+
+                # 4️⃣ Marcar que ya no esperamos respuesta y recargar
+                st.session_state.await_response = False
+                print("🟡 [LOG] await_response establecido a False")
+                print("🔄 [LOG] Triggerando st.rerun() para mostrar el nuevo mensaje...")
+                st.rerun()  # ✅ FIX: Forzar rerun para renderizar el nuevo mensaje
 
         except Exception as e:
+            print(f"❌ [LOG] Error en _generate_assistant_response: {str(e)}")
             self._handle_api_error(e)
+        finally:
+            # FIX: Siempre limpiar flag de generación
+            st.session_state._generating_response = False
+            st.session_state.await_response = False
+            print("🔴 [LOG] Finalizando _generate_assistant_response()")
 
     
 
@@ -729,6 +633,65 @@ window.addEventListener('message', event => {
         fetch(`?action=${data.action}&id=${data.id}`, {method:'POST'});
     }
 });
+
+// FIX: Ajustar layout cuando sidebar se oculta/muestra (MEJORADO PARA DESKTOP)
+(function adjustSidebarLayout() {
+    function updateLayout() {
+        const sidebar = document.querySelector('[data-testid="stSidebar"]');
+        const main = document.querySelector('[data-testid="stMain"]');
+        const appContainer = document.querySelector('[data-testid="stAppViewContainer"]');
+
+        if (!sidebar || !main || !appContainer) return;
+
+        const computedStyle = getComputedStyle(sidebar);
+        const sidebarWidth = computedStyle.width;
+        const sidebarDisplay = computedStyle.display;
+        const sidebarVisibility = computedStyle.visibility;
+
+        // MÚLTIPLES FORMAS EN QUE STREAMLIT OCULTA LA SIDEBAR:
+        // 1. En móvil: display: none
+        // 2. En desktop (collapsed): width: 0px o visibility: hidden
+        // 3. Inline styles pueden variar
+        const sidebarHidden =
+            sidebarDisplay === 'none' ||
+            sidebarWidth === '0px' ||
+            sidebarVisibility === 'hidden' ||
+            sidebar.style.display === 'none' ||
+            sidebar.offsetWidth === 0;
+
+        if (sidebarHidden) {
+            // Sidebar oculta: expandir main al 100%
+            main.style.flex = '1 1 100%';
+            main.style.width = '100%';
+            main.style.maxWidth = 'none';
+            appContainer.style.gap = '0';
+            console.log('📱 Sidebar oculta - Chat expandido al 100%');
+        } else {
+            // Sidebar visible: layout normal
+            main.style.flex = '1 1 auto';
+            main.style.width = '100%';
+            main.style.maxWidth = '100%';
+            appContainer.style.gap = '0';
+            console.log('📌 Sidebar visible - Layout normal');
+        }
+    }
+
+    // Ejecutar inmediatamente
+    updateLayout();
+
+    // Observar cambios continuamente
+    const observer = new MutationObserver(updateLayout);
+    observer.observe(document.body, {
+        attributes: true,
+        subtree: true,
+        attributeFilter: ['style', 'class', 'data-testid'],
+        attributeOldValue: true,
+        characterData: false
+    });
+
+    // Observar también cambios de tamaño (resize)
+    window.addEventListener('resize', updateLayout);
+})();
 </script>
 """, unsafe_allow_html=True)
 

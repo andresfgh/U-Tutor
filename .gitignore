@@ -1,12 +1,7 @@
-# U-TUTOR v5.0 - GitIgnore optimizado
-
-# ========== Python ==========
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
-*.dylib
 
 # Virtual environment
 venv/
@@ -22,137 +17,40 @@ dist/
 *.egg
 .eggs/
 pip-wheel-metadata/
-*.whl
 
-# ========== Streamlit ==========
+# Streamlit cache
 .streamlit/
-.streamlit/secrets.toml
 
-# ========== IDE / Editores ==========
-# VS Code
-.vscode/
-*.code-workspace
-
-# PyCharm
-.idea/
-*.iml
-
-# Jupyter Notebook
+# Jupyter Notebook checkpoints
 .ipynb_checkpoints/
-*.ipynb_checkpoints
 
-# ========== Testing ==========
+# Pytest cache
 .pytest_cache/
-.coverage
-htmlcov/
-.tox/
-*.cover
 
-# ========== Logs ==========
+# VS Code settings
+.vscode/
+
+# MacOS files
+.DS_Store
+
+# Logs
 *.log
-logs/
-*.log.*
 
-# ========== Environment Variables ==========
+# Environment variables
 .env
 .env.*
-!.env.example
-*.env.local
-*.env.production
 
-# ========== Database ==========
-# SQLite databases
+# Database files
 *.sqlite3
 *.db
-*.db-journal
-*.db-shm
-*.db-wal
-chat_history.db
 
-# Database backups
-*.sql
-*.dump
-
-# ========== Audio Files Temporales ==========
-# Archivos de audio generados por TTS
-*.mp3
-*.wav
-*.ogg
-*.opus
-temp_audio/
-audio_cache/
-ututor_*.mp3
-ututor_*.wav
-
-# ========== Docker ==========
-# No ignorar Dockerfile ni docker-compose
-# Pero sí archivos temporales de Docker
-.docker/
-docker-compose.override.yml
-
-# ========== Archivos del Sistema ==========
-# MacOS
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-$RECYCLE.BIN/
-
-# Linux
-*~
-
-# ========== Archivos Temporales ==========
+# Other
 *.bak
 *.tmp
-*.temp
-*.swp
-*.swo
-*~
-.met
-.txt~
-
-# ========== Archivos Comprimidos ==========
 *.zip
 *.tar.gz
 *.rar
-*.7z
 
-# ========== Datos y Caché ==========
-# Directorio de datos (mantener estructura, ignorar contenido)
-data/*
-!data/.gitkeep
-
-# Caché general
-cache/
-.cache/
-__pycache__/
-
-# ========== Claude Code ==========
-.claude/
-
-# ========== Secrets y Configuración Sensible ==========
-secrets/
-*.pem
-*.key
-*.cert
-config/production.py
-
-# ========== Archivos de Versiones Antiguas ==========
-app_v1.py
-app_v2_onefile.py
-*.old
-*.backup
-
-# ========== Node Modules (si usas herramientas frontend) ==========
-node_modules/
-package-lock.json
-yarn.lock
-
-# ========== Otros ==========
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
+.met 
+.claude
+.txt~

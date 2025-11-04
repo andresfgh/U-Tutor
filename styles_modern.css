@@ -1,110 +1,80 @@
-/* U-TUTOR v5.0 - Estilos Modernos Mejorados */
+/* U-TUTOR v5.0 - Estilos Modernos - Desktop & Responsive */
 
 /* ============================================
-   VARIABLES GLOBALES
+   RESET Y BASE - COMPATIBLE CON STREAMLIT
    ============================================ */
-:root {
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-fast: all 0.2s ease;
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
-    --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.25);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
 }
 
 /* ============================================
-   CONTENEDOR DE INPUT - MEJORADO
+   TEMA Y COLORES BASE
    ============================================ */
-.input-container {
-    margin-top: 20px;
-    padding: 0 20px;
-    animation: fadeInUp 0.4s ease-out;
-}
-
-.input-wrapper {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.02);
-    padding: 10px;
-    border-radius: 16px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(160, 196, 255, 0.1);
-    transition: var(--transition-smooth);
-}
-
-.input-wrapper:hover {
-    border-color: rgba(160, 196, 255, 0.3);
-    box-shadow: var(--shadow-md);
-}
-
-.input-wrapper:focus-within {
-    border-color: rgba(160, 196, 255, 0.5);
-    box-shadow: 0 0 0 3px rgba(160, 196, 255, 0.1);
-}
-
-.send-button-wrapper {
-    display: flex;
-    justify-content: flex-end;
-}
-
-/* Botón de envío mejorado */
-.send-button-wrapper button {
-    min-width: 48px !important;
-    min-height: 48px !important;
-    border-radius: 12px !important;
-    font-size: 20px !important;
-    transition: var(--transition-smooth) !important;
-    box-shadow: var(--shadow-sm) !important;
-}
-
-.send-button-wrapper button:hover {
-    transform: translateY(-2px) scale(1.05) !important;
-    box-shadow: var(--shadow-md) !important;
-}
-
-.send-button-wrapper button:active {
-    transform: translateY(0) scale(0.98) !important;
+.stApp {
+    background-color: #0b1116 !important;
+    color: #e6e6fa !important;
 }
 
 /* ============================================
-   CONTENEDOR DEL CHAT - MEJORADO
+   SIDEBAR - STREAMLIT NATIVE
+   ============================================ */
+[data-testid="stSidebar"] {
+    background-color: #05070a !important;
+    border-right: 1px solid rgba(160, 196, 255, 0.15) !important;
+}
+
+[data-testid="stSidebar"] > div {
+    background-color: transparent !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stSidebarContent"] {
+    background-color: transparent !important;
+}
+
+/* ============================================
+   MAIN CONTENT
+   ============================================ */
+[data-testid="stMain"] {
+    background-color: #0b1116 !important;
+    padding-bottom: 100px !important; /* Espacio para el input fijo */
+}
+
+[data-testid="stMainBlockContainer"],
+.block-container {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    padding-top: 1rem !important;
+    max-width: 100% !important;
+    background-color: transparent !important;
+}
+
+/* ============================================
+   CHAT MESSAGES - ESTILOS
    ============================================ */
 .u-tutor-chat {
-    max-width: 1100px;
+    width: 100%;
+    max-width: 1000px;
     margin: 0 auto;
-    padding: 20px;
-    animation: fadeIn 0.5s ease-out;
+    padding: 0 1rem;
 }
 
 .u-tutor-messages {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
     margin-bottom: 20px;
-    padding: 10px 0;
 }
 
-/* ============================================
-   BURBUJAS DE CHAT - MEJORADAS
-   ============================================ */
 .u-tutor-message {
     display: flex;
-    margin-bottom: 12px;
-    animation: slideInMessage 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    opacity: 0;
-    animation-fill-mode: forwards;
-}
-
-@keyframes slideInMessage {
-    from {
-        opacity: 0;
-        transform: translateY(20px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+    width: 100%;
+    margin-bottom: 8px;
 }
 
 .u-tutor-message.user {
@@ -115,202 +85,34 @@
     justify-content: flex-start;
 }
 
+/* BURBUJAS DE CHAT */
 .u-tutor-bubble-user,
 .u-tutor-bubble-assistant {
     max-width: 70%;
-    padding: 14px 18px;
-    border-radius: 16px;
+    padding: 12px 16px;
+    border-radius: 14px;
     word-wrap: break-word;
     line-height: 1.6;
-    position: relative;
-    transition: var(--transition-smooth);
-    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in;
 }
 
-/* Burbuja de usuario - Mejorada */
 .u-tutor-bubble-user {
-    background: linear-gradient(135deg, rgba(43, 58, 74, 0.95) 0%, rgba(35, 48, 63, 0.95) 100%);
-    color: #a0c4ff;
-    box-shadow: var(--shadow-md);
-    border: 1px solid rgba(160, 196, 255, 0.2);
-    border-bottom-right-radius: 4px;
+    background-color: #2b3a4a !important;
+    color: #a0c4ff !important;
+    border-bottom-right-radius: 6px;
 }
 
-.u-tutor-bubble-user::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    right: -8px;
-    width: 0;
-    height: 0;
-    border-left: 8px solid rgba(43, 58, 74, 0.95);
-    border-bottom: 8px solid transparent;
-}
-
-/* Burbuja de asistente - Mejorada */
 .u-tutor-bubble-assistant {
-    background: linear-gradient(135deg, rgba(27, 42, 54, 0.95) 0%, rgba(20, 35, 47, 0.95) 100%);
-    color: #a0c4ff;
-    box-shadow: var(--shadow-md);
-    border: 1px solid rgba(160, 196, 255, 0.15);
-    border-bottom-left-radius: 4px;
+    background-color: #1b2a36 !important;
+    color: #a0c4ff !important;
+    border-bottom-left-radius: 6px;
 }
 
-.u-tutor-bubble-assistant::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: -8px;
-    width: 0;
-    height: 0;
-    border-right: 8px solid rgba(27, 42, 54, 0.95);
-    border-bottom: 8px solid transparent;
-}
-
-/* Hover effects para burbujas */
-.u-tutor-bubble-user:hover,
-.u-tutor-bubble-assistant:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-/* ============================================
-   AVATARES - MEJORADOS
-   ============================================ */
-.u-tutor-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 12px;
-    flex-shrink: 0;
-    background: linear-gradient(135deg, rgba(160, 196, 255, 0.2) 0%, rgba(100, 150, 255, 0.2) 100%);
-    border: 2px solid rgba(160, 196, 255, 0.3);
-    font-size: 20px;
-    transition: var(--transition-smooth);
-    box-shadow: var(--shadow-sm);
-}
-
-.u-tutor-avatar:hover {
-    transform: scale(1.1) rotate(5deg);
-    box-shadow: var(--shadow-md);
-    border-color: rgba(160, 196, 255, 0.5);
-}
-
-.u-tutor-avatar.assistant {
-    background: linear-gradient(135deg, rgba(160, 196, 255, 0.25) 0%, rgba(100, 150, 255, 0.25) 100%);
-}
-
-.u-tutor-avatar.user {
-    background: linear-gradient(135deg, rgba(43, 58, 74, 0.3) 0%, rgba(35, 48, 63, 0.3) 100%);
-}
-
-/* ============================================
-   SIDEBAR - MEJORADO
-   ============================================ */
-.u-tutor-sidebar {
-    padding: 20px;
-}
-
-.sidebar-separator {
-    margin: 20px 0;
-    color: rgba(160, 196, 255, 0.3);
-    text-align: center;
-    font-weight: 300;
-    letter-spacing: 2px;
-}
-
-/* Botones del sidebar - Mejorados */
-[data-testid="stSidebar"] button {
-    transition: var(--transition-smooth) !important;
-    border-radius: 10px !important;
-    font-weight: 500 !important;
-}
-
-[data-testid="stSidebar"] button:hover {
-    transform: translateX(4px) !important;
-    box-shadow: var(--shadow-md) !important;
-}
-
-/* Botón de nueva conversación */
-[data-testid="stSidebar"] button[key="new_conv_button"] {
-    background: linear-gradient(135deg, rgba(160, 196, 255, 0.2) 0%, rgba(100, 150, 255, 0.2) 100%) !important;
-    border: 2px solid rgba(160, 196, 255, 0.3) !important;
-    font-size: 15px !important;
-    padding: 12px 16px !important;
-}
-
-[data-testid="stSidebar"] button[key="new_conv_button"]:hover {
-    background: linear-gradient(135deg, rgba(160, 196, 255, 0.3) 0%, rgba(100, 150, 255, 0.3) 100%) !important;
-    border-color: rgba(160, 196, 255, 0.5) !important;
-}
-
-/* Input de búsqueda en sidebar */
-[data-testid="stSidebar"] input {
-    border-radius: 10px !important;
-    transition: var(--transition-smooth) !important;
-    border: 1px solid rgba(160, 196, 255, 0.2) !important;
-}
-
-[data-testid="stSidebar"] input:focus {
-    border-color: rgba(160, 196, 255, 0.5) !important;
-    box-shadow: 0 0 0 3px rgba(160, 196, 255, 0.1) !important;
-}
-
-/* ============================================
-   BOTONES DE AUDIO - MEJORADOS
-   ============================================ */
-.tts-button-container-general {
-    margin: 12px 0;
-}
-
-.tts-audio-container-general {
-    margin: 12px 0;
-    animation: fadeIn 0.3s ease;
-}
-
-/* Botones de reproducción de audio */
-button[key*="play_"],
-button[key*="pause_"] {
-    min-width: 40px !important;
-    min-height: 40px !important;
-    border-radius: 50% !important;
-    transition: var(--transition-smooth) !important;
-    box-shadow: var(--shadow-sm) !important;
-    background: linear-gradient(135deg, rgba(160, 196, 255, 0.2) 0%, rgba(100, 150, 255, 0.2) 100%) !important;
-    border: 2px solid rgba(160, 196, 255, 0.3) !important;
-}
-
-button[key*="play_"]:hover,
-button[key*="pause_"]:hover {
-    transform: scale(1.15) !important;
-    box-shadow: var(--shadow-md) !important;
-    border-color: rgba(160, 196, 255, 0.5) !important;
-}
-
-button[key*="play_"]:active,
-button[key*="pause_"]:active {
-    transform: scale(0.95) !important;
-}
-
-/* ============================================
-   ANIMACIONES GLOBALES
-   ============================================ */
 @keyframes fadeIn {
     from {
         opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(10px);
     }
     to {
         opacity: 1;
@@ -318,134 +120,287 @@ button[key*="pause_"]:active {
     }
 }
 
-@keyframes pulse {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.7;
-    }
-}
-
-/* Indicador de "escribiendo..." */
-.typing-indicator {
-    display: inline-flex;
-    gap: 4px;
-    padding: 8px 12px;
-}
-
-.typing-indicator span {
-    width: 8px;
-    height: 8px;
+/* AVATARES */
+.u-tutor-avatar {
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: rgba(160, 196, 255, 0.6);
-    animation: pulse 1.4s infinite;
-}
-
-.typing-indicator span:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.typing-indicator span:nth-child(3) {
-    animation-delay: 0.4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+    flex-shrink: 0;
+    font-size: 18px;
+    background: rgba(160, 196, 255, 0.1);
+    border: 1px solid rgba(160, 196, 255, 0.2);
 }
 
 /* ============================================
-   MEJORAS DE INPUT DE TEXTO
+   INPUT FIJO AL FONDO
    ============================================ */
-[data-testid="stTextInput"] input {
-    transition: var(--transition-smooth) !important;
-    border-radius: 12px !important;
-    padding: 12px 16px !important;
+.chat-input-fixed-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(180deg, transparent, rgba(11, 17, 22, 0.98));
+    padding: 15px 20px 20px;
+    z-index: 100;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-[data-testid="stTextInput"] input::placeholder {
-    opacity: 0.6;
-    transition: var(--transition-fast);
+.chat-input-fixed-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
 }
 
-[data-testid="stTextInput"] input:focus::placeholder {
-    opacity: 0.8;
-    transform: translateX(4px);
+/* ============================================
+   INPUT FIELDS
+   ============================================ */
+.stTextInput > div > div > input {
+    background-color: #0f1720 !important;
+    color: #e6e6fa !important;
+    border-color: #2d3748 !important;
+}
+
+.stTextInput > div > div > input::placeholder {
+    color: rgba(230, 230, 250, 0.6) !important;
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+.stButton > button {
+    background-color: #14232a !important;
+    color: #dbeefb !important;
+    border-color: rgba(160, 196, 255, 0.2) !important;
+    border-radius: 8px !important;
+    padding: 10px 16px !important;
+    transition: all 0.2s ease !important;
+}
+
+.stButton > button:hover {
+    background-color: #1b2f3a !important;
+    box-shadow: 0 4px 12px rgba(160, 196, 255, 0.15) !important;
+}
+
+/* ============================================
+   SIDEBAR BUTTONS
+   ============================================ */
+[data-testid="stSidebar"] .stButton > button {
+    background-color: rgba(160, 196, 255, 0.08) !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    border-color: rgba(160, 196, 255, 0.2) !important;
+    width: 100% !important;
+    margin-bottom: 8px !important;
+}
+
+[data-testid="stSidebar"] .stButton > button:hover {
+    background-color: rgba(160, 196, 255, 0.15) !important;
+    color: rgba(255, 255, 255, 1) !important;
 }
 
 /* ============================================
    SPINNER Y LOADING
    ============================================ */
-.stSpinner > div {
-    border-color: rgba(160, 196, 255, 0.3) !important;
-    border-top-color: rgba(160, 196, 255, 0.8) !important;
+[data-testid="stSpinner"] {
+    text-align: center;
 }
 
 /* ============================================
-   SCROLL SUAVE
+   EXPANDERS
    ============================================ */
-html {
-    scroll-behavior: smooth;
+.stExpander {
+    border-color: rgba(160, 196, 255, 0.2) !important;
 }
 
-/* Scrollbar personalizado */
+[data-testid="stExpanderDetails"] {
+    background-color: rgba(11, 17, 22, 0.8) !important;
+}
+
+/* ============================================
+   INFO / WARNING / ERROR MESSAGES
+   ============================================ */
+.stAlert {
+    background-color: rgba(11, 17, 22, 0.8) !important;
+    border-left-color: #a0c4ff !important;
+}
+
+.stInfo {
+    background-color: rgba(30, 80, 120, 0.3) !important;
+    color: #a0c4ff !important;
+}
+
+.stSuccess {
+    background-color: rgba(40, 120, 80, 0.3) !important;
+    color: #7dd3a1 !important;
+}
+
+.stWarning {
+    background-color: rgba(120, 100, 40, 0.3) !important;
+    color: #f8c471 !important;
+}
+
+.stError {
+    background-color: rgba(120, 40, 40, 0.3) !important;
+    color: #f77e7e !important;
+}
+
+/* ============================================
+   SELECTBOX Y INPUTS
+   ============================================ */
+[data-baseweb="select"] {
+    background-color: #0f1720 !important;
+}
+
+[data-baseweb="input"] input {
+    background-color: #0f1720 !important;
+    color: #e6e6fa !important;
+}
+
+/* ============================================
+   TABS
+   ============================================ */
+[role="tablist"] {
+    border-bottom-color: rgba(160, 196, 255, 0.1) !important;
+}
+
+[role="tab"] {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+[role="tab"][aria-selected="true"] {
+    color: #a0c4ff !important;
+    border-bottom-color: #a0c4ff !important;
+}
+
+/* ============================================
+   SCROLL PERSONALIZADO
+   ============================================ */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, rgba(160, 196, 255, 0.5) 0%, rgba(100, 150, 255, 0.5) 100%);
+    background: linear-gradient(180deg, rgba(160, 196, 255, 0.4) 0%, rgba(100, 150, 255, 0.4) 100%);
     border-radius: 10px;
-    transition: var(--transition-fast);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, rgba(160, 196, 255, 0.7) 0%, rgba(100, 150, 255, 0.7) 100%);
+    background: linear-gradient(180deg, rgba(160, 196, 255, 0.6) 0%, rgba(100, 150, 255, 0.6) 100%);
 }
 
 /* ============================================
-   RESPONSIVE - MOBILE FIRST
+   RESPONSIVE - TABLET (1024px Y MENOR)
    ============================================ */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+    [data-testid="stMainBlockContainer"],
+    .block-container {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+    }
+
     .u-tutor-bubble-user,
     .u-tutor-bubble-assistant {
-        max-width: 85%;
-        padding: 12px 16px;
+        max-width: 75%;
+        padding: 10px 14px;
         font-size: 14px;
     }
 
-    .input-wrapper {
-        gap: 8px;
-        padding: 8px;
-    }
-
     .u-tutor-avatar {
-        width: 36px;
-        height: 36px;
-        font-size: 18px;
-    }
-
-    .send-button-wrapper button {
-        min-width: 44px !important;
-        min-height: 44px !important;
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+        margin: 0 8px;
     }
 }
 
-@media (max-width: 480px) {
+/* ============================================
+   RESPONSIVE - MOBILE (768px Y MENOR)
+   ============================================ */
+@media (max-width: 768px) {
+    [data-testid="stMainBlockContainer"],
+    .block-container {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
     .u-tutor-bubble-user,
     .u-tutor-bubble-assistant {
-        max-width: 92%;
-        padding: 10px 14px;
+        max-width: 85%;
+        padding: 10px 12px;
         font-size: 13px;
     }
 
-    .input-wrapper {
-        flex-direction: row;
-        gap: 6px;
+    .u-tutor-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+        margin: 0 6px;
     }
 
-    .u-tutor-messages {
-        gap: 12px;
+    .chat-input-fixed-container {
+        padding: 10px 12px 15px;
+    }
+
+    .chat-input-fixed-inner {
+        gap: 8px;
+    }
+}
+
+/* ============================================
+   RESPONSIVE - MOBILE PEQUEÑO (480px Y MENOR)
+   ============================================ */
+@media (max-width: 480px) {
+    [data-testid="stMainBlockContainer"],
+    .block-container {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+
+    .u-tutor-chat {
+        padding: 0 0.5rem;
+    }
+
+    .u-tutor-bubble-user,
+    .u-tutor-bubble-assistant {
+        max-width: 92%;
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    .u-tutor-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 13px;
+        margin: 0 4px;
+    }
+
+    .stButton > button {
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+    }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+    .chat-input-fixed-container {
+        display: none !important;
+    }
+
+    [data-testid="stSidebar"] {
+        display: none !important;
     }
 }

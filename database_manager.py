@@ -19,10 +19,10 @@ class DatabaseManager:
             conn.close()
     
     def init_database(self):
-        """Inicializa la base de datos SQLite con índices optimizados - U-TUTOR v5.0"""
+        """Inicializa la base de datos SQLite"""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
-
+        
         # Crear tabla para conversaciones
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS conversations (
@@ -32,7 +32,7 @@ class DatabaseManager:
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         ''')
-
+        
         # Crear tabla para mensajes
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS messages (
@@ -44,40 +44,7 @@ class DatabaseManager:
                 FOREIGN KEY (conversation_id) REFERENCES conversations (id)
             )
         ''')
-
-        # ========== OPTIMIZACIONES DE RENDIMIENTO - v5.0 ==========
-        # Crear índices para acelerar búsquedas y consultas frecuentes
-
-        # Índice para ordenar conversaciones por fecha de actualización (usado en sidebar)
-        cursor.execute('''
-            CREATE INDEX IF NOT EXISTS idx_conversations_updated
-            ON conversations(updated_at DESC)
-        ''')
-
-        # Índice para búsqueda de conversaciones por título
-        cursor.execute('''
-            CREATE INDEX IF NOT EXISTS idx_conversations_title
-            ON conversations(title)
-        ''')
-
-        # Índice para cargar mensajes de una conversación específica (muy usado)
-        cursor.execute('''
-            CREATE INDEX IF NOT EXISTS idx_messages_conversation
-            ON messages(conversation_id, timestamp)
-        ''')
-
-        # Índice para búsquedas dentro del contenido de mensajes
-        cursor.execute('''
-            CREATE INDEX IF NOT EXISTS idx_messages_content
-            ON messages(content)
-        ''')
-
-        # Índice compuesto para estadísticas rápidas
-        cursor.execute('''
-            CREATE INDEX IF NOT EXISTS idx_messages_stats
-            ON messages(conversation_id, role)
-        ''')
-
+        
         conn.commit()
         conn.close()
     
@@ -90,27 +57,15 @@ class DatabaseManager:
             conn.commit()
             return conversation_id
     
-    def get_conversations(self, limit: Optional[int] = None, offset: int = 0) -> List[Tuple]:
-        """
-        Obtiene conversaciones con soporte de paginación - U-TUTOR v5.0
-
-        Args:
-            limit: Número máximo de conversaciones a retornar (None = todas)
-            offset: Número de conversaciones a saltar (para paginación)
-        """
+    def get_conversations(self) -> List[Tuple]:
+        """Obtiene todas las conversaciones - U-TUTOR v3.0"""
         with self.get_connection() as conn:
             cursor = conn.cursor()
-
-            query = '''
-                SELECT id, title, created_at, updated_at
-                FROM conversations
+            cursor.execute('''
+                SELECT id, title, created_at, updated_at 
+                FROM conversations 
                 ORDER BY updated_at DESC
-            '''
-
-            if limit is not None:
-                query += f' LIMIT {limit} OFFSET {offset}'
-
-            cursor.execute(query)
+            ''')
             return cursor.fetchall()
     
     def get_conversation_by_id(self, conversation_id: int) -> Optional[Tuple]:
@@ -277,36 +232,16 @@ class DatabaseManager:
                 'newest_conversation': newest_conversation
             }
 
-    def search_conversations(self, query: str, search_in_content: bool = False) -> List[Tuple]:
-        """
-        Busca conversaciones por título o contenido - U-TUTOR v5.0
-
-        Args:
-            query: Texto a buscar
-            search_in_content: Si True, busca también en el contenido de mensajes
-        """
+    def search_conversations(self, query: str) -> List[Tuple]:
+        """Busca conversaciones por título - U-TUTOR v3.0"""
         with self.get_connection() as conn:
             cursor = conn.cursor()
-
-            if search_in_content:
-                # Búsqueda avanzada: buscar en título Y contenido de mensajes
-                cursor.execute('''
-                    SELECT DISTINCT c.id, c.title, c.created_at, c.updated_at
-                    FROM conversations c
-                    LEFT JOIN messages m ON c.id = m.conversation_id
-                    WHERE LOWER(c.title) LIKE LOWER(?)
-                       OR LOWER(m.content) LIKE LOWER(?)
-                    ORDER BY c.updated_at DESC
-                ''', (f'%{query}%', f'%{query}%'))
-            else:
-                # Búsqueda simple: solo en títulos (más rápido)
-                cursor.execute('''
-                    SELECT id, title, created_at, updated_at
-                    FROM conversations
-                    WHERE LOWER(title) LIKE LOWER(?)
-                    ORDER BY updated_at DESC
-                ''', (f'%{query}%',))
-
+            cursor.execute('''
+                SELECT id, title, created_at, updated_at 
+                FROM conversations 
+                WHERE LOWER(title) LIKE LOWER(?)
+                ORDER BY updated_at DESC
+            ''', (f'%{query}%',))
             return cursor.fetchall()
     
     def generate_auto_title(self, conversation_id: int, chat_manager) -> str:
