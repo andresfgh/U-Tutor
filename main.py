@@ -265,6 +265,12 @@ class UTutorApp:
     
     def run(self):
         """Ejecuta la aplicación principal - U-TUTOR v5.0"""
+        # FIX: Procesar mensaje pendiente ANTES de renderizar para evitar bugs visuales
+        if st.session_state.pending_message:
+            self._process_pending_message()
+            # Después de procesar, hacer rerun inmediatamente para actualizar la UI
+            return
+
         # Aplicar tema dinámico
         self._apply_theme()
 
@@ -273,10 +279,10 @@ class UTutorApp:
 
         # Renderizar área principal de chat
         self.ui_components.render_main_chat_area()
-        
+
         # Renderizar página de configuración si está activa
         self.ui_components.render_config_page()
-        
+
         # Mostrar historial de mensajes (debe mostrarse antes del input)
         self.ui_components.render_chat_messages(st.session_state.messages)
 
@@ -287,10 +293,6 @@ class UTutorApp:
 
         # Reproducir audio si está solicitado
         self._handle_audio_playback()
-
-        # Manejar mensaje pendiente de sugerencias
-        if st.session_state.pending_message:
-            self._process_pending_message()
 
         # Controles de entrada (texto y voz)
         self._render_input_controls()
@@ -372,9 +374,12 @@ class UTutorApp:
         """Procesa mensaje pendiente de sugerencias rápidas - U-TUTOR v5.0"""
         prompt = st.session_state.pending_message
         st.session_state.pending_message = None
-        
+
         # Procesar como mensaje normal
         self._process_user_message(prompt)
+
+        # FIX: Hacer rerun inmediatamente para actualizar la UI y generar respuesta
+        st.rerun()
         
 
   # ------------------ Render input y uploader ------------------
@@ -502,7 +507,7 @@ class UTutorApp:
 
     def _generate_assistant_response(self):
         """
-        Genera y muestra la respuesta del asistente con streaming - U-TUTOR v5.0
+        Genera y muestra la respuesta del asistente con streaming palabra por palabra - U-TUTOR v5.0
         FIX: Mejor protección contra re-entrancy y duplicación de mensajes
         """
         try:
@@ -513,62 +518,68 @@ class UTutorApp:
 
             print("🟢 [LOG] Iniciando _generate_assistant_response()")
             st.session_state._generating_response = True
-            placeholder = st.empty()  # Placeholder para el spinner / mensaje temporal
 
-            with self.ui_components.show_spinner("🤔 Jake está pensando..."):
+            # 🔹 Crear placeholder para mostrar el texto progresivamente
+            message_placeholder = st.empty()
+            full_response = ""
 
-                full_response = ""
-                print(f"📨 [LOG] Llamando get_response_stream con {len(st.session_state.messages)} mensajes")
+            print(f"📨 [LOG] Llamando get_response_stream con {len(st.session_state.messages)} mensajes")
 
-                # 1️⃣ Recolectar respuesta en streaming
-                for chunk in self.chat_manager.get_response_stream(st.session_state.messages):
-                    if hasattr(chunk, 'content') and chunk.content:
-                        # Asegurar que es string antes de concatenar
-                        content = str(chunk.content) if chunk.content else ""
-                        full_response += content
+            # 1️⃣ Mostrar respuesta palabra por palabra en tiempo real
+            for chunk in self.chat_manager.get_response_stream(st.session_state.messages):
+                if hasattr(chunk, 'content') and chunk.content:
+                    # Asegurar que es string antes de concatenar
+                    content = str(chunk.content) if chunk.content else ""
+                    full_response += content
 
-                print(f"✅ [LOG] Respuesta generada ({len(full_response)} caracteres)")
+                    # 🔹 Actualizar el placeholder con el texto acumulado (STREAMING VISUAL)
+                    message_placeholder.markdown(f"🎓 **Jake:**\n\n{full_response}▌")
 
-                # 2️⃣ Post-procesar traducción para TTS si aplica
-                tts_language = st.session_state.get('tts_language', 'es')
-                auto_translate = st.session_state.get('auto_translate', True)
+            # 🔹 Mostrar versión final sin el cursor
+            message_placeholder.markdown(f"🎓 **Jake:**\n\n{full_response}")
 
-                if tts_language == 'en' and auto_translate:
-                    translated_response = self.chat_manager.translate_text(full_response, 'en')
-                    audio_response = translated_response if translated_response != full_response else full_response
-                else:
-                    audio_response = full_response
+            print(f"✅ [LOG] Respuesta generada ({len(full_response)} caracteres)")
 
-                # 3️⃣ FIX: Verificar que no haya un mensaje del asistente duplicado
-                # (esto puede ocurrir si se hizo rerun antes de limpiar await_response)
-                print(f"💾 [LOG] Guardando mensaje en sesión y BD...")
+            # 2️⃣ Post-procesar traducción para TTS si aplica
+            tts_language = st.session_state.get('tts_language', 'es')
+            auto_translate = st.session_state.get('auto_translate', True)
 
-                # Verificar si el último mensaje ya es del asistente (evitar duplicado)
-                if (st.session_state.messages and
-                    st.session_state.messages[-1].get("role") == "assistant"):
-                    print("⚠️ [LOG] Último mensaje ya es del asistente, reemplazando...")
-                    st.session_state.messages[-1] = {
-                        "role": "assistant",
-                        "content": full_response
-                    }
-                else:
-                    st.session_state.messages.append({
-                        "role": "assistant",
-                        "content": full_response
-                    })
+            if tts_language == 'en' and auto_translate:
+                translated_response = self.chat_manager.translate_text(full_response, 'en')
+                audio_response = translated_response if translated_response != full_response else full_response
+            else:
+                audio_response = full_response
 
-                self.db_manager.save_message(
-                    st.session_state.current_conversation_id,
-                    "assistant",
-                    full_response
-                )
-                print(f"💾 [LOG] Mensaje guardado. Total mensajes: {len(st.session_state.messages)}")
+            # 3️⃣ FIX: Verificar que no haya un mensaje del asistente duplicado
+            # (esto puede ocurrir si se hizo rerun antes de limpiar await_response)
+            print(f"💾 [LOG] Guardando mensaje en sesión y BD...")
 
-                # 4️⃣ Marcar que ya no esperamos respuesta y recargar
-                st.session_state.await_response = False
-                print("🟡 [LOG] await_response establecido a False")
-                print("🔄 [LOG] Triggerando st.rerun() para mostrar el nuevo mensaje...")
-                st.rerun()  # ✅ FIX: Forzar rerun para renderizar el nuevo mensaje
+            # Verificar si el último mensaje ya es del asistente (evitar duplicado)
+            if (st.session_state.messages and
+                st.session_state.messages[-1].get("role") == "assistant"):
+                print("⚠️ [LOG] Último mensaje ya es del asistente, reemplazando...")
+                st.session_state.messages[-1] = {
+                    "role": "assistant",
+                    "content": full_response
+                }
+            else:
+                st.session_state.messages.append({
+                    "role": "assistant",
+                    "content": full_response
+                })
+
+            self.db_manager.save_message(
+                st.session_state.current_conversation_id,
+                "assistant",
+                full_response
+            )
+            print(f"💾 [LOG] Mensaje guardado. Total mensajes: {len(st.session_state.messages)}")
+
+            # 4️⃣ Marcar que ya no esperamos respuesta y recargar
+            st.session_state.await_response = False
+            print("🟡 [LOG] await_response establecido a False")
+            print("🔄 [LOG] Triggerando st.rerun() para mostrar el nuevo mensaje...")
+            st.rerun()  # ✅ FIX: Forzar rerun para renderizar el nuevo mensaje
 
         except Exception as e:
             print(f"❌ [LOG] Error en _generate_assistant_response: {str(e)}")

@@ -936,7 +936,12 @@ class UIComponents:
                 """, unsafe_allow_html=True)
         else:
             # Sugerencias para nueva conversación
-            self._render_quick_suggestions()
+            # FIX: No mostrar sugerencias si hay mensajes o si se está generando
+            has_messages = len(st.session_state.get('messages', [])) > 0
+            is_generating = st.session_state.get('await_response', False)
+
+            if not has_messages and not is_generating:
+                self._render_quick_suggestions()
 
         # Cerrar wrapper del área de chat
         st.markdown("</div>", unsafe_allow_html=True)
@@ -1116,7 +1121,7 @@ class UIComponents:
                         st.rerun()
                 else:
                     if st.button("▶️", key=f"play_{unique_key}", help="Reproducir audio", use_container_width=True):
-                        with st.spinner("Generando audio..."):
+                        with st.spinner(""):
                             processed_text = self.tts_manager.preprocess_text_for_tts(text)
                             audio_data = self.tts_manager.text_to_speech_fast(processed_text)
                             if audio_data:
@@ -1150,7 +1155,7 @@ class UIComponents:
                         st.rerun()
                 else:
                     if st.button("▶️", key=f"play_{unique_key}", help="Reproducir audio", use_container_width=True):
-                        with st.spinner("Generando audio..."):
+                        with st.spinner(""):
                             processed_text = self.tts_manager.preprocess_text_for_tts(text)
                             audio_data = self.tts_manager.text_to_speech_fast(processed_text)
                             if audio_data:
